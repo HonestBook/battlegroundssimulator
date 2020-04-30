@@ -2,19 +2,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class testType {
-	private static void modifyInt(int x) {
-		x = x + 1;
-	}	
-	
-	private static void modifyString(String str) {
-		str = str.substring(5,6);
-		System.out.println(str);
-	}
-	
-	private static void modifyHashMap(HashMap map) {
-		map.remove(1);
-	}
-	
 	public static void main(String[] args) {
 		String str1 = new String("1");
 		String str2 = new String("2");
