@@ -14,7 +14,6 @@ public class testType {
 		list.add(str1);
 		list.add(str2);
 		list.add(str3);
-		list.add(str4);
 		list.add(str5);
 		
 		int i = 0;
