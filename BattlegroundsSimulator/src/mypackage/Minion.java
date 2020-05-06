@@ -1,6 +1,15 @@
 package mypackage;
+
 import java.lang.Math;
 
+/**
+ * This class represents a simple minion in Battlegrounds.
+ * A minion has health and attack.
+ * A minion can also have keywords such as Taunt and Poisoned. 
+ * (Not yet implemented)
+ * @author HonestBook
+ *
+ */
 public class Minion {
 	private int atk;
 	
@@ -50,7 +59,11 @@ public class Minion {
 		return currentHP;
 	}
 
-	
+	/**
+	 * Reduces the minion's current HP.
+	 * If its HP is below 0 after reduction, set it to dead.
+	 * @param damage
+	 */
 	public void loseHP(int damage) {
 		currentHP = Math.max(currentHP - damage, 0);
 		if (currentHP == 0) {
@@ -58,6 +71,10 @@ public class Minion {
 		}
 	}
 	
+	/**
+	 * Return if the minion is alive.
+	 * @return True if the minion is alive.
+	 */
 	public boolean isAlive() {
 		return alive;
 	}
