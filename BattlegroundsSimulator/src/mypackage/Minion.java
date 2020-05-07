@@ -37,6 +37,18 @@ public class Minion {
 	}
 	
 	/**
+	 * Constructor for cloning a minion.
+	 * @param minion
+	 */
+	public Minion(Minion minion) {
+		this.name = minion.getName();
+		this.atk = minion.getAttack();
+		this.currentHP = minion.getHealth();
+		this.tier = minion.getTier(); 
+		alive = true;
+	}
+	
+	/**
 	 * Return the name of this minion.
 	 * @return
 	 */

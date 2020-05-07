@@ -15,7 +15,9 @@ import java.util.Iterator;
 public class Battleground {
 	private ArrayList<Minion> minionsA;
 	private ArrayList<Minion> minionsB;
-
+	private ArrayList<Minion> minionsTempA;
+	private ArrayList<Minion> minionsTempB;
+	
 	Random random = new Random();
 
 	/**
@@ -26,7 +28,52 @@ public class Battleground {
 		minionsB = new ArrayList<>();
 	}
 
-	public void combat() {
+	/**
+	 * Simulate a combat and return an integer 
+	 * indicating the result of the combat.
+	 * Note that the minions remain intact 
+	 * after this type of combat. 
+	 * @return Either 1 (player A wins), 0 (draw), -1 (player B wins)
+	 */
+	public int combat() {
+		// Copy minions.
+		minionsTempA = new ArrayList<>();
+		for (Minion minion : minionsA) {
+			minionsTempA.add(new Minion(minion));
+		}
+		minionsTempB = new ArrayList<>();
+		for (Minion minion : minionsB) {
+			minionsTempB.add(new Minion(minion));
+		}
+		battlePhase();
+		int result = 0;
+		if (minionsA.stream().anyMatch(minion -> minion.isAlive())) {
+			result = 1;
+		} else if (minionsB.stream().anyMatch(minion -> minion.isAlive())) {
+			result = -1;
+		} else {
+			result = 0;
+		}
+		// Restore minions after battle phase.
+		minionsA.clear();
+		for (Minion minion : minionsTempA) {
+			minionsA.add(new Minion(minion));
+		}
+		minionsB.clear();
+		for (Minion minion : minionsTempB) {
+			minionsB.add(new Minion(minion));
+		}
+		return result;
+	}
+	
+	/**
+	 * Simulate a single combat.
+	 * Position (minions) is printed at the combat.
+	 * Result, including winner and damage, is printed 
+	 * after the combat.
+	 * The minions are modified after this type of combat.
+	 */
+	public void detailedCombat() {
 		printStartingPosition();
 		battlePhase();
 		printBattleResult();
@@ -35,7 +82,7 @@ public class Battleground {
 	/**
 	 * Print the position at the start of combat.
 	 */
-	private void printStartingPosition() {
+	public void printStartingPosition() {
 		System.out.println("Starting Position");
 		StringBuffer bufferA = new StringBuffer("PlayerA: ");
 		for (Minion minion : minionsA) {
@@ -189,7 +236,7 @@ public class Battleground {
 	public void attack(Minion attacker, Minion defender) {
 		attacker.loseHP(defender.getAttack());
 		defender.loseHP(attacker.getAttack());
-		System.out.println(attacker.getName() + " attacked " + defender.getName() + ".");
+//		System.out.println(attacker.getName() + " attacked " + defender.getName() + ".");
 	}
 
 	/**
