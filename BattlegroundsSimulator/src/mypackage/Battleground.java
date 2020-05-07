@@ -156,9 +156,23 @@ public class Battleground {
 	private void printBattleResult() {
 		StringBuffer buffer = new StringBuffer("Result: ");
 		if (minionsA.stream().anyMatch(minion -> minion.isAlive())) {
-			buffer.append("PlayerA wins!");
+			int damage = minionsA.stream()
+					.filter(minion -> minion.isAlive())
+					.mapToInt(minion -> minion.getTier())
+					.sum();
+			buffer.append("PlayerA wins! ");
+			buffer.append("PlayerB loses ");
+			buffer.append(damage);
+			buffer.append(" HP.");
 		} else if (minionsB.stream().anyMatch(minion -> minion.isAlive())) {
-			buffer.append("PlayerB wins!");
+			int damage = minionsB.stream()
+					.filter(minion -> minion.isAlive())
+					.mapToInt(minion -> minion.getTier())
+					.sum();
+			buffer.append("PlayerB wins! ");
+			buffer.append("PlayerA loses ");
+			buffer.append(damage);
+			buffer.append(" HP.");
 		} else {
 			buffer.append("Draw!");
 		}

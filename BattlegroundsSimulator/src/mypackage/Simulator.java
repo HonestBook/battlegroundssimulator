@@ -12,16 +12,16 @@ public class Simulator {
 //		ground.addMinion(new Minion("’–≥±”„", 3, 2), Player.pA);
 //		ground.addMinion(new Minion(" ØÃ¡”„", 2, 3), Player.pA);
 //		ground.addMinion(new Minion("¿œ Û", 2, 2), Player.pA);
-		ground.addMinion(new Minion("◊”À√", 2, 2), Player.pB);
-		ground.addMinion(new Minion("’–≥±”„B1", 3, 2), Player.pB);
-		ground.addMinion(new Minion("’–≥±”„B2", 2, 1), Player.pB);
-		ground.addMinion(new Minion("–°”„»À", 1, 1), Player.pB);
-		ground.addMinion(new Minion("≥∞∑Ì¡˙", 3, 4), Player.pB);
-		ground.addMinion(new Minion("π‹¿Ì‘±", 3, 3), Player.pB);
-		ground.addMinion(new Minion("±¨±¨", 4, 6), Player.pA);
-		ground.addMinion(new Minion("ª˙–µ±™", 4, 3), Player.pA);	
-		ground.addMinion(new Minion("ø÷¿«", 2, 2), Player.pA);	
-		ground.addMinion(new Minion("¿œ Û", 3, 2), Player.pA);	
+		ground.addMinion(new Minion("◊”À√", 2, 2, 2), Player.pB);
+		ground.addMinion(new Minion("’–≥±”„B1", 3, 2, 1), Player.pB);
+		ground.addMinion(new Minion("’–≥±”„B2", 2, 1, 1), Player.pB);
+		ground.addMinion(new Minion("–°”„»À", 1, 1, 1), Player.pB);
+		ground.addMinion(new Minion("≥∞∑Ì¡˙", 3, 4, 1), Player.pB);
+		ground.addMinion(new Minion("π‹¿Ì‘±", 3, 3, 2), Player.pB);
+		ground.addMinion(new Minion("±¨±¨", 4, 6, 2), Player.pA);
+		ground.addMinion(new Minion("ª˙–µ±™", 4, 3, 2), Player.pA);	
+		ground.addMinion(new Minion("ø÷¿«", 2, 2, 1), Player.pA);	
+		ground.addMinion(new Minion("¿œ Û", 3, 2, 2), Player.pA);	
 		ground.combat();
 	}
 }

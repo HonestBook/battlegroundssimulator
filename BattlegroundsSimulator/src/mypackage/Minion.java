@@ -21,16 +21,18 @@ public class Minion {
 	
 	private String name;
 	
+	private int tier;
 	/**
 	 * Create an instance of Minion.
 	 * @param name
 	 * @param attack
 	 * @param health
 	 */
-	public Minion(String name, int attack, int health) {
+	public Minion(String name, int attack, int health, int tier) {
 		this.name = name;
 		atk = attack;
 		currentHP = health;
+		this.tier = tier;
 		alive = true;
 	}
 	
@@ -59,6 +61,14 @@ public class Minion {
 		return currentHP;
 	}
 
+	/**
+	 * Return the tier of this minion.
+	 * @return
+	 */
+	public int getTier() {
+		return tier;
+	}
+	
 	/**
 	 * Reduces the minion's current HP.
 	 * If its HP is below 0 after reduction, set it to dead.
