@@ -3,26 +3,37 @@ package mypackage;
 import java.util.ArrayList;
 import java.util.Random;
 import java.lang.StringBuffer;
+import java.util.Iterator;
 
+/**
+ * This is a class simulates the battleground. The main function of the
+ * battleground is to implement the battle phase of the game.
+ * 
+ * @author HonestBook
+ *
+ */
 public class Battleground {
 	private ArrayList<Minion> minionsA;
 	private ArrayList<Minion> minionsB;
 
 	Random random = new Random();
 
+	/**
+	 * Constructor of the Battleground class.
+	 */
 	public Battleground() {
 		minionsA = new ArrayList<>();
 		minionsB = new ArrayList<>();
 	}
 
-	public void battle() {
+	public void combat() {
 		printStartingPosition();
 		battlePhase();
 		printBattleResult();
 	}
 
 	/**
-	 * Print the position at the start of battle.
+	 * Print the position at the start of combat.
 	 */
 	private void printStartingPosition() {
 		System.out.println("Starting Position");
@@ -42,11 +53,11 @@ public class Battleground {
 		}
 		System.out.println(bufferB.toString());
 		System.out.println(bufferA.toString());
-		System.out.println("Battle!");
+		System.out.println("Combat!");
 	}
 
 	/**
-	 * The battle phase of a battle.
+	 * The battle phase of a combat.
 	 */
 	private void battlePhase() {
 		// A flag indicating whose turn to attack.
@@ -57,69 +68,84 @@ public class Battleground {
 			turn = false;
 		}
 
-		// Count which minion of each player to attack.
-		int atkCounterA = 0;
-		int atkCounterB = 0;
+		Iterator<Minion> atkIteratorA = minionsA.iterator();
+		Iterator<Minion> atkIteratorB = minionsB.iterator();
 
+		// Each iteration of this loop represents one attack.
 		while (battleViable()) {
 			Minion attacker = null;
 			Minion defender = null;
-			// If attacker is dead, set this to 1 to correct the attack counter.
-			int counterAmender = 0;
-
+			// Select attacker and defender if 
+			// it is PlayerA's turn to attack.
 			if (turn) {
-				// If the last minion is killed when it is about to attack,
-				// Set the attack counter to 0.
-				if (atkCounterA >= minionsA.size()) {
-					atkCounterA = 0;
+				// Reset attack iterator if there is no next minion.
+				if (!atkIteratorA.hasNext()) {
+					atkIteratorA = minionsA.iterator();
 				}
-				// Get the attacker and the defender.
-				attacker = minionsA.get(atkCounterA);
-				int defenderIndex = random.nextInt(this.minionsB.size());
-				defender = minionsB.get(defenderIndex);
-
-				attack(attacker, defender);
-
-				// Remove any dead minion from the lists.
-				if (!attacker.isAlive()) {
-					counterAmender = 1;
-					System.out.println(attacker.getName() + " is dead.");
-					minionsA.remove(atkCounterA);
+				// Find the attacker.
+				while (attacker == null) {
+					Minion nextAttaker = atkIteratorA.next();
+					// If that minion is alive, set it as attacker.
+					if (nextAttaker.isAlive()) {
+						attacker = nextAttaker;
+					// Else remove this minion from the list
+					// and get the next minion.
+					} else {
+						atkIteratorA.remove();
+						// Reset attack iterator if there is no next
+						// minion after removal.
+						if (!atkIteratorA.hasNext()) {
+							atkIteratorA = minionsA.iterator();
+						}
+					}
 				}
-				if (!defender.isAlive()) {
-					System.out.println(defender.getName() + " is dead.");
-					minionsB.remove(defenderIndex);
+				
+				// Find the defender.
+				while (defender == null) {
+					Minion nextDefender = minionsB.get(random.nextInt(minionsB.size()));
+					// If that minion is alive, set it as the defender.
+					if (nextDefender.isAlive()) {
+						defender = nextDefender;
+					}
 				}
-				// Increment the attack counter only if there exists minions of playerA.
-				if (minionsA.size() > 0) {
-					atkCounterA = (atkCounterA + 1 - counterAmender) % minionsA.size();
+				// Reset the attack iterator.
+			}
+			// Select attacker and defender if 
+			// it is PlayerB's turn to attack.
+			else {
+				// Reset attack iterator if there is no next minion.
+				if (!atkIteratorB.hasNext()) {
+					atkIteratorB = minionsB.iterator();
 				}
-			} else {
-				// If the last minion is killed when it is about to attack,
-				// Set the attack counter to 0.
-				if (atkCounterB >= minionsB.size()) {
-					atkCounterB = 0;
+				// Find the attacker.
+				while (attacker == null) {
+					Minion nextAttaker = atkIteratorB.next();
+					// If that minion is alive, set it as attacker.
+					if (nextAttaker.isAlive()) {
+						attacker = nextAttaker;
+					// Else remove this minion from the list
+					// and get the next minion.
+					} else {
+						atkIteratorB.remove();
+						// Reset attack iterator if there is no next
+						// minion after removal.
+						if (!atkIteratorB.hasNext()) {
+							atkIteratorB = minionsB.iterator();
+						}
+					}
 				}
-				// Get the attacker and the defender.
-				attacker = minionsB.get(atkCounterB);
-				int defenderIndex = random.nextInt(minionsA.size());
-				defender = minionsA.get(defenderIndex);
-				attack(attacker, defender);
-				// Remove any dead minion from the lists.
-				if (!attacker.isAlive()) {
-					counterAmender = 1;
-					System.out.println(attacker.getName() + " is dead.");
-					minionsB.remove(atkCounterA);
-				}
-				if (!defender.isAlive()) {
-					System.out.println(defender.getName() + " is dead.");
-					minionsA.remove(defenderIndex);
-				}
-				// Increment the attack counter only if there exists minions of playerB.
-				if (minionsB.size() > 0) {
-					atkCounterB = (atkCounterB + 1 - counterAmender) % minionsB.size();
+				
+				// Find the defender.
+				while (defender == null) {
+					Minion nextDefender = minionsA.get(random.nextInt(minionsA.size()));
+					// If that minion is alive, set it as the defender.
+					if (nextDefender.isAlive()) {
+						defender = nextDefender;
+					}
 				}
 			}
+			attack(attacker, defender);
+			// Change attacking player.
 			turn = !turn;
 		}
 	}
@@ -129,9 +155,9 @@ public class Battleground {
 	 */
 	private void printBattleResult() {
 		StringBuffer buffer = new StringBuffer("Result: ");
-		if (minionsA.size() > 0) {
+		if (minionsA.stream().anyMatch(minion -> minion.isAlive())) {
 			buffer.append("PlayerA wins!");
-		} else if (minionsB.size() > 0) {
+		} else if (minionsB.stream().anyMatch(minion -> minion.isAlive())) {
 			buffer.append("PlayerB wins!");
 		} else {
 			buffer.append("Draw!");
@@ -171,52 +197,29 @@ public class Battleground {
 	}
 
 	/**
-	 * Create a minion and add it to minions of player A.
+	 * Add a minion to one of the players. This usually works with calling the
+	 * constructor of Minion in the parameter to create a new minion.
 	 * 
-	 * @param name
-	 * @param attack
-	 * @param health
+	 * @param minion The minion to add.
+	 * @param player The owner of this minion.
 	 */
-	public void addMinionA(String name, int attack, int health) {
-		minionsA.add(new Minion(name, attack, health));
-	}
-
-	/**
-	 * Create a minion and add it to minions of player B.
-	 * 
-	 * @param name
-	 * @param attack
-	 * @param health
-	 */
-	public void addMinionB(String name, int attack, int health) {
-		minionsB.add(new Minion(name, attack, health));
-	}
-
-	/**
-	 * Add an existing minion to player A.
-	 * 
-	 * @param newMinion
-	 */
-	public void addMinionA(Minion newMinion) {
-		minionsA.add(newMinion);
-	}
-
-	/**
-	 * Add an existing minion to player B.
-	 * 
-	 * @param newMinion
-	 */
-	public void addMinionB(Minion newMinion) {
-		minionsB.add(newMinion);
+	public void addMinion(Minion minion, Player player) {
+		if (player == Player.pA) {
+			minionsA.add(minion);
+		} else {
+			minionsB.add(minion);
+		}
 	}
 
 	/**
 	 * Return if the battle will continue. The battle continues when both players
-	 * have at least one minion.
+	 * have at least one minion alive.
 	 * 
 	 * @return
 	 */
 	public boolean battleViable() {
-		return (minionsA.size() > 0 && minionsB.size() > 0);
+		// Check if there are alive minions in both lists.
+		return (minionsA.stream().anyMatch(minion -> minion.isAlive())) &&
+				(minionsB.stream().anyMatch(minion -> minion.isAlive()));	
 	}
 }
